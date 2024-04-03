@@ -6,6 +6,22 @@ import utils
 
 logger = utils.get_notebook_logger()
 
+HEMISPHERE_LAT = {'northern_hemisphere': (0,90), 'southern_hemisphere': (-90,0), 'global': (None, None)}
+
+
+def calculate_global_value(ds: xr.DataArray, lat_bounds:tuple=None, experiment_params=None):
+    '''Calculates global average.'''
+
+    if not lat_bounds and not experiment_params: lat_bounds = (None,None)
+    if isinstance(experiment_params, dict):
+        lat_bounds = HEMISPHERE_LAT[experiment_params['hemisphere']]
+    
+    if lat_bounds is not None: ds = ds.sel(lat=slice(*lat_bounds))
+    
+    ds_mean = ds.clima.space_mean() 
+    
+    return ds_mean
+
 def calculate_branch_average(ds_1pct, ds_a1, upper_limit=10, lower_limit=10, logginglevel='ERROR'):
     """
     Calculate the average of a specific branch in a dataset.

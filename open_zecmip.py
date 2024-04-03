@@ -52,7 +52,8 @@ def extract_experiment_into_xrlist(
     
     utils.change_logginglevel(logginglevel)
     if zecmip_model_paths is None:
-        default_json_path = Path.cwd() / 'Documents' / 'PhD' / 'data' / f'zecmip_experiment_paths_ensemble_sorted_{variable}.json'
+        default_json_path = Path.cwd() / 'Documents' / 'GRL_ZECMIP_natural_variability_and_RCB' /\
+        f'zecmip_experiment_paths_ensemble_sorted_{variable}.json'
         with default_json_path.open('r') as f:
             zecmip_model_paths = json.load(f)
 

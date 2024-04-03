@@ -18,18 +18,6 @@ from typing import Optional, Dict, Callable
 logger = utils.get_notebook_logger()
 
 
-def calculate_global_value(ds: xr.DataArray, variable:str, lat_bounds:tuple=None, experiment_params=None):
-    '''Calculates anomalies and mean.'''
-
-    if not lat_bounds and not experiment_params: lat_bounds = (None,None)
-    if isinstance(experiment_params, dict): lat_bounds = constants.HEMISPHERE_LAT[experiment_params['hemisphere']]
-    
-    ds = ds.sel(lat=slice(*lat_bounds))
-    if variable == 'sic': ds_mean = calculate_ice_earth_fraction(ds)
-    else: ds_mean = ds.clima.space_mean() 
-    
-    return ds_mean.persist()
-
 def polynomial_fit(y: ArrayLike, x:Optional[ArrayLike] = None, order:float=None, deg:float=None, 
                   nan_removal: Literal['all', 'endpoints'] = 'endpoints') -> ArrayLike:
     """
@@ -72,7 +60,7 @@ def polynomial_fit(y: ArrayLike, x:Optional[ArrayLike] = None, order:float=None,
     fitted_line_lenght_maintained = np.concatenate([[np.nan]*number_nans_at_start, fitted_line, [np.nan] *number_nans_at_end])
     return fitted_line_lenght_maintained
 
-@utils.function_details
+# @utils.function_details
 def lowess_fit(exog: Callable, window:int=50) -> Callable:
     '''
     A function to fill the lowess function with exog (x values) and the fraction
@@ -80,7 +68,7 @@ def lowess_fit(exog: Callable, window:int=50) -> Callable:
     return partial(lowess, exog=exog, frac=window/len(exog), return_sorted=False)
 
 
-@utils.function_details
+# @utils.function_details
 def apply_detrend_as_ufunc(
     da: xr.DataArray, func1d: Callable, func_kwargs:Optional[Dict]=None, debug=False) -> xr.DataArray:
     '''

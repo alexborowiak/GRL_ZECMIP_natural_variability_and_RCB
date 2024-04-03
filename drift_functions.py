@@ -21,7 +21,6 @@ def grid_trend(x: np.ndarray,t: np.ndarray):
     grad = np.polyfit(t,x,1)[0]
     return grad
 
-#calculate_trend
 def calculate_trend(data: xr.DataArray):
     '''
     Calcualtes the gradient of the trend along the year axis.
